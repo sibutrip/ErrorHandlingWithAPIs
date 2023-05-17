@@ -20,12 +20,12 @@ class ViewModel: ObservableObject {
             return
         }
         
-        /// the following 2 functions marked with "try" throw errors. safely handle those errors by
-        /// 1) catching each of them with a do block and a catch block
-        /// 2) in each catch block, setting our published fetchError to one of the cases of our FetchError enum
+        //TODO: use a do block and a catch block to catch this error and set our fetchError property to one of the cases of our FetchError enum
         let (data, _) = try! await URLSession.shared.data(from: url)
-        let decoder = JSONDecoder()
-        let decodedData = try! decoder.decode(Response.self, from: data)
+        
+        //TODO: use a do block and a catch block to catch this error and set our fetchError property to one of the cases of our FetchError enum
+        let decodedData = try! JSONDecoder().decode(Response.self, from: data)
+        
         self.planets = decodedData.results
     }
 }

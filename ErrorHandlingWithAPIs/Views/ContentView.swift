@@ -19,7 +19,7 @@ struct ContentView: View {
                     TextField("URL", text: $vm.urlPath)
                         .onSubmit {
                             Task {
-                                /// catch the errors from this throwing function. if the function throws errors, set "didRaiseError" to true
+                                // TODO: catch the errors from this throwing function. if the function throws errors, set "didRaiseError" to true
                                 try! await vm.fetchPlanets()
                             }
                         }
@@ -34,7 +34,7 @@ struct ContentView: View {
                     }
                 }
             }
-            /// use this alert to monitor "didRaiseError" - if it changes to true, display our vm.fetchError
+            //TODO: use this alert to monitor "didRaiseError" - if it changes to true, display our vm.fetchError
             .alert(isPresented: $didRaiseError, error: vm.fetchError) {
                 Button("okay") {
                     didRaiseError = false
