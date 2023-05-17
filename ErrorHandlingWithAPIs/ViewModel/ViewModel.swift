@@ -12,7 +12,6 @@ class ViewModel: ObservableObject {
     @Published var planets: [Planet] = []
     @Published var urlPath: String = ""
     
-    
     func fetchPlanets() async throws {
         
         guard let url = URL(string: "https://swapi.dev/api/\(urlPath.lowercased())") else {
