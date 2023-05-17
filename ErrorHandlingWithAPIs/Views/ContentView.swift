@@ -11,6 +11,7 @@ struct ContentView: View {
     @StateObject var vm = ViewModel()
     @State var didRaiseError = false
     @State var searchText = ""
+    @State var fetchError: FetchError?
     
     var body: some View {
         VStack {
@@ -20,7 +21,12 @@ struct ContentView: View {
                         .onSubmit {
                             Task {
                                 // TODO: catch the errors from this throwing function. if the function throws errors, set "didRaiseError" to true
-                                try! await vm.fetchPlanets()
+                                do {
+                                    try await vm.fetchPlanets()
+                                } catch {
+                                    didRaiseError = true
+                                    self.fetchError = error as? FetchError
+                                }
                             }
                         }
                 }
@@ -35,7 +41,7 @@ struct ContentView: View {
                 }
             }
             //TODO: use this alert to monitor "didRaiseError" - if it changes to true, display our vm.fetchError
-            .alert(isPresented: $didRaiseError, error: vm.fetchError) {
+            .alert(isPresented: $didRaiseError, error: fetchError) {
                 Button("okay") {
                     didRaiseError = false
                 }

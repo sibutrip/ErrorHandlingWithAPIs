@@ -11,7 +11,7 @@ import Foundation
 // use these errors within your ViewModel
 enum FetchError {
     case urlSessionError(Error)
-    case invalidUrl
+    case invalidJSONResponse
 }
 
 extension FetchError: LocalizedError {
@@ -19,8 +19,8 @@ extension FetchError: LocalizedError {
         switch self {
         case .urlSessionError:
             return NSLocalizedString("Could not process url request", comment: "Fetch Error")
-        case .invalidUrl:
-            return NSLocalizedString("Could not create URL", comment: "URL Creation Error")
+        case .invalidJSONResponse:
+            return NSLocalizedString("Could not read JSON response", comment: "JSON Decoding Error")
         }
     }
 }

@@ -10,7 +10,6 @@ import Foundation
 @MainActor
 class ViewModel: ObservableObject {
     @Published var planets: [Planet] = []
-    @Published var fetchError: FetchError?
     @Published var urlPath: String = ""
     
     
@@ -19,13 +18,18 @@ class ViewModel: ObservableObject {
         guard let url = URL(string: "https://swapi.dev/api/\(urlPath.lowercased())") else {
             return
         }
+        var data = Data()
+        do {
+            (data, _) = try await URLSession.shared.data(from: url)
+        } catch {
+            throw FetchError.urlSessionError(error)
+        }
         
-        //TODO: use a do block and a catch block to catch this error and set our fetchError property to one of the cases of our FetchError enum
-        let (data, _) = try! await URLSession.shared.data(from: url)
-        
-        //TODO: use a do block and a catch block to catch this error and set our fetchError property to one of the cases of our FetchError enum
-        let decodedData = try! JSONDecoder().decode(Response.self, from: data)
-        
-        self.planets = decodedData.results
+        do {
+            let decodedData = try JSONDecoder().decode(Response.self, from: data)
+            self.planets = decodedData.results
+        } catch {
+            throw FetchError.invalidJSONResponse
+        }
     }
 }
