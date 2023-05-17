@@ -7,8 +7,6 @@
 
 import Foundation
 
-
-// use these errors within your View
 enum FetchError {
     case urlSessionError(Error)
     case invalidJSONResponse
